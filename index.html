@@ -1,0 +1,1863 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>O Pequeno Príncipe Carioca</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Spectral:ital,wght@0,300;0,400;1,300;1,400&family=Dancing+Script:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --parchment: #FBF6ED;
+    --parchment-dark: #F0E6D0;
+    --ink: #2D2418;
+    --ink-light: #5C4A35;
+    --gold: #C4956A;
+    --gold-light: #E8C89E;
+    --sky: #7EB5D6;
+    --sky-deep: #3A6B8C;
+    --sunset: #D4734E;
+    --sunset-light: #E8A07A;
+    --star: #F2C94C;
+    --star-glow: #FFF3C4;
+    --sage: #8BAA7F;
+    --sage-light: #B5CFA9;
+    --rose: #C75B6F;
+    --rose-light: #E8A0AE;
+    --night: #1A1A2E;
+    --night-mid: #2D2B55;
+    --sand: #D4B896;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html {
+    scroll-behavior: smooth;
+    overflow-x: hidden;
+  }
+
+  body {
+    font-family: 'Cormorant Garamond', 'Georgia', serif;
+    background: var(--parchment);
+    color: var(--ink);
+    line-height: 1.85;
+    font-size: 22px;
+    font-weight: 400;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ============ GRAIN OVERLAY ============ */
+  body::after {
+    content: '';
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    pointer-events: none;
+    z-index: 9999;
+    opacity: 0.025;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+    background-repeat: repeat;
+    background-size: 256px;
+  }
+
+  /* ============ SECTIONS ============ */
+  .chapter {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 80px 24px;
+    position: relative;
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 1.2s ease, transform 1.2s ease;
+  }
+  .chapter.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .chapter-inner {
+    max-width: 680px;
+    width: 100%;
+    text-align: center;
+  }
+
+  /* ============ TYPOGRAPHY ============ */
+  .chapter-number {
+    font-family: 'Dancing Script', cursive;
+    font-size: 16px;
+    font-weight: 400;
+    color: var(--gold);
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+    display: block;
+  }
+
+  h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 300;
+    font-size: clamp(2.8rem, 6vw, 4.5rem);
+    line-height: 1.1;
+    color: var(--ink);
+    margin-bottom: 8px;
+    letter-spacing: -0.5px;
+  }
+
+  h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 300;
+    font-size: clamp(1.6rem, 3.5vw, 2.4rem);
+    line-height: 1.25;
+    color: var(--ink);
+    margin-bottom: 28px;
+    letter-spacing: 0.5px;
+  }
+
+  .subtitle {
+    font-family: 'Spectral', serif;
+    font-weight: 300;
+    font-style: italic;
+    font-size: 1.05rem;
+    color: var(--ink-light);
+    margin-bottom: 40px;
+    letter-spacing: 1.5px;
+  }
+
+  .text {
+    font-family: 'Spectral', serif;
+    font-weight: 300;
+    font-size: 1.05rem;
+    line-height: 2;
+    color: var(--ink-light);
+    text-align: justify;
+    text-align-last: center;
+    margin-bottom: 24px;
+    hyphens: auto;
+  }
+
+  .text-center {
+    text-align: center;
+    text-align-last: center;
+  }
+
+  .dialogue {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-weight: 400;
+    font-size: 1.15rem;
+    color: var(--ink);
+    margin: 32px 0;
+    padding: 0 20px;
+    text-align: center;
+    line-height: 1.9;
+  }
+
+  .dialogue em {
+    font-style: normal;
+    font-weight: 500;
+  }
+
+  .epigraph {
+    font-family: 'Spectral', serif;
+    font-style: italic;
+    font-weight: 300;
+    font-size: 1rem;
+    color: var(--gold);
+    margin: 20px 0 40px;
+    text-align: center;
+  }
+
+  /* ============ DECORATIVE ELEMENTS ============ */
+  .ornament {
+    display: block;
+    margin: 40px auto;
+    color: var(--gold-light);
+    font-size: 20px;
+    letter-spacing: 12px;
+    text-align: center;
+    opacity: 0.6;
+  }
+
+  .star-divider {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    margin: 48px 0;
+    opacity: 0.5;
+  }
+  .star-divider::before,
+  .star-divider::after {
+    content: '';
+    height: 1px;
+    width: 60px;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  }
+  .star-divider span {
+    color: var(--gold);
+    font-size: 10px;
+  }
+
+  /* ============ SVG ILLUSTRATIONS ============ */
+  .illustration {
+    display: flex;
+    justify-content: center;
+    margin: 48px auto;
+    width: 100%;
+    max-width: 420px;
+  }
+  .illustration svg {
+    width: 100%;
+    height: auto;
+    filter: drop-shadow(0 4px 20px rgba(196, 149, 106, 0.15));
+  }
+
+  .illustration-small {
+    max-width: 220px;
+  }
+
+  .illustration-wide {
+    max-width: 500px;
+  }
+
+  /* ============ COVER ============ */
+  .cover {
+    min-height: 100vh;
+    background: linear-gradient(180deg,
+      #1A1A2E 0%,
+      #2D2B55 25%,
+      #3A3570 40%,
+      #5B4A8A 55%,
+      #D4734E 75%,
+      #E8A07A 85%,
+      #F2C94C 92%,
+      var(--parchment) 100%
+    );
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+    padding: 60px 24px;
+  }
+
+  .cover .stars-bg {
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 60%;
+    pointer-events: none;
+  }
+
+  .cover h1 {
+    color: var(--star-glow);
+    font-size: clamp(3rem, 7vw, 5.5rem);
+    text-shadow: 0 0 60px rgba(242, 201, 76, 0.3);
+    z-index: 2;
+    margin-bottom: 16px;
+  }
+
+  .cover .subtitle {
+    color: rgba(255,255,255,0.6);
+    z-index: 2;
+    font-size: 1.1rem;
+  }
+
+  .cover .author {
+    font-family: 'Spectral', serif;
+    font-weight: 300;
+    font-size: 0.9rem;
+    color: rgba(255,255,255,0.35);
+    z-index: 2;
+    margin-top: 24px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+  }
+
+  .scroll-hint {
+    position: absolute;
+    bottom: 100px;
+    z-index: 2;
+    animation: float 3s ease-in-out infinite;
+    opacity: 0.4;
+  }
+  .scroll-hint svg { width: 24px; height: 24px; }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(10px); }
+  }
+
+  /* ============ NIGHT SECTIONS ============ */
+  .chapter-night {
+    background: linear-gradient(180deg, var(--parchment) 0%, var(--night) 15%, var(--night) 85%, var(--parchment) 100%);
+  }
+  .chapter-night .chapter-number { color: var(--star); }
+  .chapter-night h2 { color: var(--star-glow); }
+  .chapter-night .text { color: rgba(255,255,255,0.6); }
+  .chapter-night .dialogue { color: rgba(255,255,255,0.85); }
+  .chapter-night .ornament { color: var(--star); }
+
+  /* ============ SUNSET SECTIONS ============ */
+  .chapter-sunset {
+    background: linear-gradient(180deg,
+      var(--parchment) 0%,
+      #FDE8D0 15%,
+      #F5C9A0 30%,
+      #E8A07A 50%,
+      #D4734E 65%,
+      #A0453A 80%,
+      var(--night) 95%,
+      var(--parchment) 100%
+    );
+  }
+  .chapter-sunset .text { color: #3A1F15; }
+  .chapter-sunset .dialogue { color: #2D1810; }
+
+  /* ============ DESERT SECTIONS ============ */
+  .chapter-desert {
+    background: linear-gradient(180deg,
+      var(--parchment) 0%,
+      #F5E6C8 15%,
+      #E8D4A8 40%,
+      #D4B896 60%,
+      #E8D4A8 80%,
+      var(--parchment) 100%
+    );
+  }
+
+  /* ============ GREEN SECTIONS ============ */
+  .chapter-garden {
+    background: linear-gradient(180deg,
+      var(--parchment) 0%,
+      #E8F0E4 20%,
+      #D5E4CD 50%,
+      #E8F0E4 80%,
+      var(--parchment) 100%
+    );
+  }
+
+  /* ============ ROSE SECTION ============ */
+  .chapter-rose {
+    background: linear-gradient(180deg,
+      var(--parchment) 0%,
+      #FDE8EC 20%,
+      #F5D0D8 50%,
+      #FDE8EC 80%,
+      var(--parchment) 100%
+    );
+  }
+
+  /* ============ FINAL ============ */
+  .chapter-final {
+    background: linear-gradient(180deg,
+      var(--parchment) 0%,
+      var(--night) 20%,
+      #0D0D1A 50%,
+      var(--night) 80%,
+      var(--parchment) 100%
+    );
+    min-height: 120vh;
+  }
+  .chapter-final h2 { color: var(--star-glow); font-size: clamp(1.8rem, 4vw, 2.8rem); }
+  .chapter-final .text { color: rgba(255,255,255,0.5); }
+  .chapter-final .dialogue { color: var(--star-glow); }
+
+  /* ============ COLOPHON ============ */
+  .colophon {
+    padding: 80px 24px;
+    text-align: center;
+    font-family: 'Spectral', serif;
+    font-size: 0.85rem;
+    color: var(--gold);
+    letter-spacing: 1px;
+    opacity: 0.5;
+  }
+
+  /* ============ RESPONSIVE ============ */
+  @media (max-width: 640px) {
+    .chapter { padding: 60px 20px; }
+    .text { font-size: 1rem; text-align: left; text-align-last: left; }
+    .dialogue { font-size: 1.05rem; padding: 0 8px; }
+    .illustration { max-width: 300px; margin: 36px auto; }
+    .illustration-small { max-width: 160px; }
+  }
+
+  /* ============ TWINKLING STARS ============ */
+  @keyframes twinkle {
+    0%, 100% { opacity: 0.3; }
+    50% { opacity: 1; }
+  }
+  .twinkle { animation: twinkle var(--dur, 3s) ease-in-out infinite; animation-delay: var(--delay, 0s); }
+</style>
+</head>
+<body>
+
+<!-- ╔══════════════════════════════════════╗ -->
+<!-- ║            CAPA / COVER              ║ -->
+<!-- ╚══════════════════════════════════════╝ -->
+<section class="cover" id="capa">
+  <svg class="stars-bg" viewBox="0 0 800 400" preserveAspectRatio="xMidYMid slice">
+    <circle cx="120" cy="80" r="1.2" fill="#FFF3C4" class="twinkle" style="--dur:4s;--delay:0s"/>
+    <circle cx="250" cy="45" r="0.8" fill="#FFF3C4" class="twinkle" style="--dur:3s;--delay:1.2s"/>
+    <circle cx="380" cy="100" r="1" fill="#FFF3C4" class="twinkle" style="--dur:5s;--delay:0.5s"/>
+    <circle cx="500" cy="30" r="1.5" fill="#FFF3C4" class="twinkle" style="--dur:3.5s;--delay:2s"/>
+    <circle cx="620" cy="90" r="0.7" fill="#FFF3C4" class="twinkle" style="--dur:4.5s;--delay:0.8s"/>
+    <circle cx="700" cy="50" r="1.1" fill="#FFF3C4" class="twinkle" style="--dur:3.2s;--delay:1.5s"/>
+    <circle cx="150" cy="160" r="0.9" fill="#FFF3C4" class="twinkle" style="--dur:4.8s;--delay:3s"/>
+    <circle cx="340" cy="180" r="1.3" fill="#FFF3C4" class="twinkle" style="--dur:3.8s;--delay:0.3s"/>
+    <circle cx="450" cy="140" r="0.6" fill="#FFF3C4" class="twinkle" style="--dur:5.2s;--delay:1.8s"/>
+    <circle cx="580" cy="170" r="1" fill="#FFF3C4" class="twinkle" style="--dur:4.2s;--delay:2.5s"/>
+    <circle cx="680" cy="150" r="0.8" fill="#FFF3C4" class="twinkle" style="--dur:3.6s;--delay:0.7s"/>
+    <circle cx="80" cy="220" r="1.1" fill="#FFF3C4" class="twinkle" style="--dur:4.4s;--delay:1s"/>
+    <circle cx="220" cy="250" r="0.7" fill="#FFF3C4" class="twinkle" style="--dur:5.5s;--delay:2.2s"/>
+    <circle cx="460" cy="230" r="1.4" fill="#FFF3C4" class="twinkle" style="--dur:3.3s;--delay:0.1s"/>
+    <circle cx="740" cy="220" r="0.9" fill="#FFF3C4" class="twinkle" style="--dur:4.7s;--delay:1.7s"/>
+    <circle cx="60" cy="300" r="0.6" fill="#FFF3C4" class="twinkle" style="--dur:3.9s;--delay:2.8s"/>
+    <circle cx="300" cy="310" r="1" fill="#FFF3C4" class="twinkle" style="--dur:4.1s;--delay:0.6s"/>
+    <circle cx="550" cy="290" r="0.8" fill="#FFF3C4" class="twinkle" style="--dur:5.1s;--delay:1.3s"/>
+    <circle cx="650" cy="320" r="1.2" fill="#FFF3C4" class="twinkle" style="--dur:3.4s;--delay:2.1s"/>
+    <circle cx="180" cy="340" r="0.5" fill="#FFF3C4" class="twinkle" style="--dur:4.6s;--delay:0.9s"/>
+  </svg>
+
+  <!-- Prince on planet silhouette -->
+  <div class="illustration" style="max-width: 240px; margin-bottom: 40px; z-index: 2;">
+    <svg viewBox="0 0 300 320" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <radialGradient id="planet-glow" cx="50%" cy="50%" r="60%">
+          <stop offset="0%" stop-color="#F2C94C" stop-opacity="0.3"/>
+          <stop offset="100%" stop-color="#F2C94C" stop-opacity="0"/>
+        </radialGradient>
+        <radialGradient id="planet-fill" cx="40%" cy="35%" r="55%">
+          <stop offset="0%" stop-color="#7EB5D6"/>
+          <stop offset="60%" stop-color="#5B9BBF"/>
+          <stop offset="100%" stop-color="#3A6B8C"/>
+        </radialGradient>
+      </defs>
+      <!-- glow -->
+      <circle cx="150" cy="220" r="120" fill="url(#planet-glow)"/>
+      <!-- planet -->
+      <circle cx="150" cy="220" r="60" fill="url(#planet-fill)" opacity="0.85"/>
+      <!-- craters / texture -->
+      <circle cx="130" cy="210" r="8" fill="#5B9BBF" opacity="0.4"/>
+      <circle cx="165" cy="235" r="12" fill="#4A8AAE" opacity="0.3"/>
+      <circle cx="145" cy="195" r="5" fill="#6BABCF" opacity="0.3"/>
+      <!-- grass tufts on planet -->
+      <path d="M118 185 Q115 172 120 178 Q118 168 124 176 Q123 170 127 180" stroke="#8BAA7F" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+      <path d="M170 193 Q168 180 173 186 Q172 176 177 184" stroke="#8BAA7F" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+      <!-- figure standing on planet -->
+      <!-- legs -->
+      <line x1="148" y1="170" x2="145" y2="158" stroke="#F2C94C" stroke-width="1.8" stroke-linecap="round"/>
+      <line x1="152" y1="170" x2="155" y2="158" stroke="#F2C94C" stroke-width="1.8" stroke-linecap="round"/>
+      <!-- body -->
+      <line x1="150" y1="158" x2="150" y2="138" stroke="#F2C94C" stroke-width="1.8" stroke-linecap="round"/>
+      <!-- scarf flowing -->
+      <path d="M150 145 Q158 140 165 130 Q172 118 168 108 Q175 115 170 125 Q165 135 155 143" fill="#D4734E" opacity="0.7"/>
+      <path d="M150 145 Q155 138 160 128 Q165 116 162 106" stroke="#D4734E" stroke-width="1.2" fill="none" stroke-linecap="round"/>
+      <!-- arms -->
+      <line x1="150" y1="148" x2="140" y2="142" stroke="#F2C94C" stroke-width="1.5" stroke-linecap="round"/>
+      <line x1="150" y1="148" x2="160" y2="143" stroke="#F2C94C" stroke-width="1.5" stroke-linecap="round"/>
+      <!-- head -->
+      <circle cx="150" cy="132" r="7" fill="#F2C94C" opacity="0.85"/>
+      <!-- hair spikes -->
+      <path d="M144 130 Q140 120 143 126 Q138 118 144 124 Q142 115 148 125" stroke="#F2C94C" stroke-width="1.2" fill="none" stroke-linecap="round"/>
+      <path d="M156 130 Q160 120 157 126 Q162 118 156 124 Q158 115 152 125" stroke="#F2C94C" stroke-width="1.2" fill="none" stroke-linecap="round"/>
+      <path d="M150 128 Q149 116 151 122 Q152 114 150 122" stroke="#F2C94C" stroke-width="1.2" fill="none" stroke-linecap="round"/>
+      <!-- single rose next to figure -->
+      <line x1="135" y1="176" x2="135" y2="165" stroke="#6B8B5E" stroke-width="1" stroke-linecap="round"/>
+      <circle cx="135" cy="163" r="3.5" fill="#C75B6F" opacity="0.7"/>
+      <circle cx="135" cy="163" r="2" fill="#E8A0AE" opacity="0.5"/>
+    </svg>
+  </div>
+
+  <h1>O Pequeno<br>Príncipe Carioca</h1>
+  <p class="subtitle">uma história da quebrada das estrelas</p>
+  <p class="author">livremente inspirado na obra de Saint-Exupéry</p>
+
+  <div class="scroll-hint">
+    <svg viewBox="0 0 24 24" fill="none" stroke="rgba(255,243,196,0.6)" stroke-width="1.5" stroke-linecap="round">
+      <path d="M12 5v14M5 12l7 7 7-7"/>
+    </svg>
+  </div>
+</section>
+
+<!-- ╔══════════════════════════════════════╗ -->
+<!-- ║          I · DEDICATÓRIA             ║ -->
+<!-- ╚══════════════════════════════════════╝ -->
+<section class="chapter" id="dedicatoria">
+  <div class="chapter-inner">
+    <span class="chapter-number">dedicatória</span>
+    <h2>Pro Meu Parceiro</h2>
+
+    <div class="star-divider"><span>✦</span></div>
+
+    <p class="text text-center">
+      Essa história aqui vai dedicada pro meu camarada de infância,
+      que hoje anda na correria dos grandes, esquecido de quando
+      a gente ficava olhando nuvem no alto do morro e achava
+      que cada uma tinha formato de bicho.
+    </p>
+
+    <p class="text text-center">
+      Peço perdão a toda criançada por dedicar esse livro
+      a um coroa. Ele merece: já foi o moleque mais sangue bom
+      da quebrada toda. E agora tá precisando de consolo —
+      mora longe, sente frio, e não tem com quem dividir
+      um café com leite de madrugada.
+    </p>
+
+    <p class="text text-center">
+      Todo malandro crescido já foi criança um dia.
+      Mas quase nenhum lembra disso.
+    </p>
+
+    <p class="text text-center">
+      Então corrijo: essa história vai dedicada a esse mesmo parceiro
+      — só que quando ele era moleque. Todo coroa já teve
+      a idade de sonhar acordado.
+    </p>
+
+    <span class="ornament">· · ·</span>
+  </div>
+</section>
+
+<!-- ╔══════════════════════════════════════╗ -->
+<!-- ║     II · O DESENHO                   ║ -->
+<!-- ╚══════════════════════════════════════╝ -->
+<section class="chapter chapter-desert" id="desenho">
+  <div class="chapter-inner">
+    <span class="chapter-number">capítulo I</span>
+    <h2>O Desenho</h2>
+
+    <!-- Illustration: the "hat" drawing -->
+    <div class="illustration illustration-small">
+      <svg viewBox="0 0 260 140" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="hat-fill" x1="0%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" stop-color="#C4956A"/>
+            <stop offset="100%" stop-color="#A07850"/>
+          </linearGradient>
+        </defs>
+        <path d="M30 110 Q30 108 40 105 Q70 95 90 60 Q110 25 130 20 Q150 15 170 45 Q185 70 200 90 Q215 100 225 105 Q232 108 232 110 Z"
+              fill="url(#hat-fill)" opacity="0.6" stroke="#8B6B45" stroke-width="1"/>
+        <line x1="20" y1="110" x2="242" y2="110" stroke="#8B6B45" stroke-width="1.2"/>
+      </svg>
+    </div>
+
+    <p class="text">
+      Quando eu era moleque, pá, vi num livro velho uma imagem que me acertou na cabeça
+      feito bola de gude no olho. Era uma jiboia que engolia os bicho tudo inteiro
+      e depois ficava ali de boa, digerindo, na moita.
+    </p>
+
+    <p class="text">
+      Fiz meu primeiro desenho. Mostrei pros coroa tudo e perguntei:
+      «isso aí dá medo, não dá?»
+    </p>
+
+    <p class="dialogue">
+      «Medo de quê, moleque? Isso é um chapéu.»
+    </p>
+
+    <p class="text">
+      Então fiz o segundo desenho, esse por dentro, pra ninguém se confundir.
+      Mas os coroa mandaram eu largar de palhaçada e ir estudar
+      geografia, gramática, conta de vezes.
+    </p>
+
+    <!-- Illustration: the see-through drawing -->
+    <div class="illustration illustration-small">
+      <svg viewBox="0 0 260 150" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="snake-fill" x1="0%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" stop-color="#C4956A" stop-opacity="0.4"/>
+            <stop offset="100%" stop-color="#A07850" stop-opacity="0.3"/>
+          </linearGradient>
+        </defs>
+        <!-- outer shape (same hat) but transparent -->
+        <path d="M30 115 Q30 113 40 108 Q70 98 90 63 Q110 28 130 23 Q150 18 170 48 Q185 73 200 93 Q215 103 225 108 Q232 111 232 115 Z"
+              fill="url(#snake-fill)" stroke="#8B6B45" stroke-width="1" stroke-dasharray="4 3"/>
+        <!-- elephant inside -->
+        <ellipse cx="130" cy="85" rx="55" ry="28" fill="#D4B896" opacity="0.5"/>
+        <!-- elephant eye -->
+        <circle cx="105" cy="78" r="2.5" fill="#5C4A35"/>
+        <!-- elephant ear -->
+        <path d="M98 72 Q88 68 90 80 Q92 88 100 85" stroke="#8B6B45" stroke-width="1" fill="#C4956A" fill-opacity="0.3"/>
+        <!-- elephant trunk -->
+        <path d="M94 82 Q85 90 82 98 Q80 104 85 106" stroke="#8B6B45" stroke-width="1.2" fill="none" stroke-linecap="round"/>
+        <!-- elephant legs -->
+        <line x1="115" y1="100" x2="115" y2="113" stroke="#8B6B45" stroke-width="1.5" stroke-linecap="round"/>
+        <line x1="125" y1="102" x2="125" y2="113" stroke="#8B6B45" stroke-width="1.5" stroke-linecap="round"/>
+        <line x1="145" y1="102" x2="145" y2="113" stroke="#8B6B45" stroke-width="1.5" stroke-linecap="round"/>
+        <line x1="155" y1="100" x2="155" y2="113" stroke="#8B6B45" stroke-width="1.5" stroke-linecap="round"/>
+        <!-- elephant tail -->
+        <path d="M170 82 Q178 78 175 72" stroke="#8B6B45" stroke-width="1" fill="none" stroke-linecap="round"/>
+        <line x1="20" y1="115" x2="242" y2="115" stroke="#8B6B45" stroke-width="1.2"/>
+      </svg>
+    </div>
+
+    <p class="text">
+      Foi assim que larguei minha carreira de artista logo no primeiro desenho.
+      E os adulto — os coroa da vida — nunca entendem nada sozinhos,
+      e cansa demais ficar explicando tudo pra eles toda hora.
+    </p>
+
+    <p class="text">
+      Aprendi a pilotar avião. Voei o mundo inteiro. E a geografia,
+      essa sim me serviu de alguma coisa: aprendi a distinguir a China
+      do Arizona no escuro, o que é útil quando se tá perdido de madrugada.
+    </p>
+
+    <span class="ornament">✦ ✦ ✦</span>
+  </div>
+</section>
+
+<!-- ╔══════════════════════════════════════╗ -->
+<!-- ║    III · O ENCONTRO NO DESERTO       ║ -->
+<!-- ╚══════════════════════════════════════╝ -->
+<section class="chapter" id="encontro">
+  <div class="chapter-inner">
+    <span class="chapter-number">capítulo II</span>
+    <h2>O Encontro</h2>
+
+    <p class="text">
+      Vivi assim na solidão, sem ninguém pra trocar ideia de verdade,
+      até o dia que meu avião deu pau no meio do Saara. Alguma peça
+      quebrou dentro do motor. E como eu tava sem mecânico e sem passageiro,
+      me preparei pra desenrolar o conserto sozinho. Era questão de vida:
+      mal tinha água pra uma semana.
+    </p>
+
+    <p class="text">
+      Dormi na areia, mais longe de qualquer vivente do que um náufrago
+      no meio do oceano. Imagina só o susto quando, de manhãzinha,
+      uma vozinha estranha me acordou:
+    </p>
+
+    <p class="dialogue">
+      «Aí, parceiro... faz um desenho de um carneiro pra mim?»
+    </p>
+
+    <!-- Illustration: the aviator meets the prince in desert -->
+    <div class="illustration">
+      <svg viewBox="0 0 400 250" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="desert-sky" x1="0%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" stop-color="#7EB5D6" stop-opacity="0.3"/>
+            <stop offset="100%" stop-color="#F5E6C8" stop-opacity="0.1"/>
+          </linearGradient>
+          <linearGradient id="sand-grad" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stop-color="#E8D4A8" stop-opacity="0.6"/>
+            <stop offset="50%" stop-color="#D4B896" stop-opacity="0.8"/>
+            <stop offset="100%" stop-color="#E8D4A8" stop-opacity="0.6"/>
+          </linearGradient>
+        </defs>
+        <!-- sky wash -->
+        <rect width="400" height="180" fill="url(#desert-sky)"/>
+        <!-- sand dunes -->
+        <path d="M0 185 Q50 170 120 180 Q200 195 280 175 Q350 165 400 178 L400 250 L0 250 Z" fill="url(#sand-grad)"/>
+        <path d="M0 195 Q80 185 160 192 Q250 200 340 188 Q380 185 400 190 L400 250 L0 250 Z" fill="#D4B896" opacity="0.4"/>
+
+        <!-- aviator figure (left) -->
+        <!-- legs -->
+        <line x1="135" y1="188" x2="132" y2="172" stroke="#5C4A35" stroke-width="1.8" stroke-linecap="round"/>
+        <line x1="140" y1="188" x2="143" y2="172" stroke="#5C4A35" stroke-width="1.8" stroke-linecap="round"/>
+        <!-- body -->
+        <line x1="137" y1="172" x2="137" y2="150" stroke="#5C4A35" stroke-width="1.8" stroke-linecap="round"/>
+        <!-- arms (one up, surprised) -->
+        <path d="M137 158 Q128 150 125 145" stroke="#5C4A35" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+        <path d="M137 158 Q146 152 150 148" stroke="#5C4A35" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+        <!-- head -->
+        <circle cx="137" cy="144" r="6.5" fill="#E8D4A8" stroke="#5C4A35" stroke-width="1"/>
+        <!-- aviator goggles -->
+        <ellipse cx="134" cy="143" rx="3" ry="2" stroke="#5C4A35" stroke-width="0.8" fill="none"/>
+        <ellipse cx="140" cy="143" rx="3" ry="2" stroke="#5C4A35" stroke-width="0.8" fill="none"/>
+        <line x1="131" y1="143" x2="128" y2="142" stroke="#5C4A35" stroke-width="0.8"/>
+        <line x1="143" y1="143" x2="146" y2="142" stroke="#5C4A35" stroke-width="0.8"/>
+
+        <!-- prince figure (right, smaller) -->
+        <!-- legs -->
+        <line x1="258" y1="178" x2="256" y2="167" stroke="#F2C94C" stroke-width="1.5" stroke-linecap="round"/>
+        <line x1="262" y1="178" x2="264" y2="167" stroke="#F2C94C" stroke-width="1.5" stroke-linecap="round"/>
+        <!-- body -->
+        <line x1="260" y1="167" x2="260" y2="150" stroke="#F2C94C" stroke-width="1.5" stroke-linecap="round"/>
+        <!-- scarf -->
+        <path d="M260 155 Q268 148 275 138 Q278 130 274 125" stroke="#D4734E" stroke-width="1.2" fill="none" stroke-linecap="round"/>
+        <!-- arms -->
+        <line x1="260" y1="157" x2="252" y2="152" stroke="#F2C94C" stroke-width="1.2" stroke-linecap="round"/>
+        <line x1="260" y1="157" x2="267" y2="153" stroke="#F2C94C" stroke-width="1.2" stroke-linecap="round"/>
+        <!-- head -->
+        <circle cx="260" cy="144" r="5.5" fill="#F2C94C" opacity="0.85"/>
+        <!-- hair -->
+        <path d="M255 142 Q251 133 255 138 Q250 130 256 136 Q253 127 259 137" stroke="#F2C94C" stroke-width="1" fill="none" stroke-linecap="round"/>
+        <path d="M265 142 Q269 133 265 138 Q270 130 264 136" stroke="#F2C94C" stroke-width="1" fill="none" stroke-linecap="round"/>
+
+        <!-- broken airplane in background -->
+        <g opacity="0.4" transform="translate(40, 160) scale(0.6)">
+          <path d="M10 30 L60 25 L80 20 L90 25 L70 30 L60 30 Z" stroke="#8B6B45" stroke-width="1.5" fill="#C4956A" fill-opacity="0.3"/>
+          <line x1="60" y1="25" x2="55" y2="10" stroke="#8B6B45" stroke-width="1.2"/>
+          <line x1="55" y1="10" x2="45" y2="8" stroke="#8B6B45" stroke-width="1"/>
+          <line x1="55" y1="10" x2="65" y2="8" stroke="#8B6B45" stroke-width="1"/>
+          <path d="M70 28 L85 18 L95 20" stroke="#8B6B45" stroke-width="1" fill="none"/>
+        </g>
+      </svg>
+    </div>
+
+    <p class="text">
+      Levantei dum pulo como se tivesse caído um raio. Esfreguei os olhos.
+      Olhei bem. E vi um molequinho fora do comum, que me encarava sério.
+      Não parecia perdido, não parecia com fome, não parecia com medo
+      de nada no meio daquele fim de mundo.
+    </p>
+
+    <p class="text">
+      Quando enfim consegui falar, disse:
+    </p>
+
+    <p class="dialogue">
+      «Opa — mas o que é que tu faz aqui, rapaz?»
+    </p>
+
+    <p class="text">
+      E ele repetiu, devagarinho, como se fosse coisa da maior importância:
+    </p>
+
+    <p class="dialogue">
+      «Faz um desenho de um carneiro pra mim... faz favor.»
+    </p>
+
+    <span class="ornament">· · ·</span>
+  </div>
+</section>
+
+<!-- ╔══════════════════════════════════════╗ -->
+<!-- ║    IV · O CARNEIRO NA CAIXA          ║ -->
+<!-- ╚══════════════════════════════════════╝ -->
+<section class="chapter" id="carneiro">
+  <div class="chapter-inner">
+    <span class="chapter-number">capítulo III</span>
+    <h2>O Carneiro na Caixa</h2>
+
+    <p class="text">
+      Ora, eu nunca tinha desenhado carneiro na minha vida. Desenhei o que eu sabia:
+      a jiboia por fora. O moleque olhou e disse:
+    </p>
+
+    <p class="dialogue">
+      «Não, não! Eu não quero jiboia com elefante dentro.
+      Jiboia é parada muito perigosa, e elefante ocupa espaço demais.
+      Lá onde eu moro tudo é pequeninho. Preciso é de um carneiro.
+      Desenha um carneiro.»
+    </p>
+
+    <!-- Illustration: the box with holes -->
+    <div class="illustration illustration-small">
+      <svg viewBox="0 0 200 180" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="box-face" x1="0%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" stop-color="#E8D4A8"/>
+            <stop offset="100%" stop-color="#D4B896"/>
+          </linearGradient>
+          <linearGradient id="box-side" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stop-color="#C4A878"/>
+            <stop offset="100%" stop-color="#D4B896"/>
+          </linearGradient>
+        </defs>
+        <!-- box front face -->
+        <rect x="45" y="70" width="90" height="75" rx="2" fill="url(#box-face)" stroke="#A08860" stroke-width="1.2"/>
+        <!-- box top -->
+        <path d="M45 70 L65 50 L155 50 L135 70 Z" fill="#E8D4A8" stroke="#A08860" stroke-width="1.2"/>
+        <!-- box right side -->
+        <path d="M135 70 L155 50 L155 125 L135 145 Z" fill="url(#box-side)" stroke="#A08860" stroke-width="1.2"/>
+        <!-- holes -->
+        <circle cx="70" cy="95" r="5" fill="none" stroke="#A08860" stroke-width="1.2"/>
+        <circle cx="90" cy="108" r="5" fill="none" stroke="#A08860" stroke-width="1.2"/>
+        <circle cx="115" cy="92" r="5" fill="none" stroke="#A08860" stroke-width="1.2"/>
+        <!-- tiny sparkle suggesting life inside -->
+        <circle cx="90" cy="85" r="1" fill="#F2C94C" opacity="0.6"/>
+      </svg>
+    </div>
+
+    <p class="text">
+      Tentei. Desenhei um gordo, desenhei um magro, desenhei um velho.
+      Ele recusou tudo. Já impaciente, rabisquei uma caixa com furinhos e falei:
+    </p>
+
+    <p class="dialogue">
+      «Tá aí a caixa. O carneiro que tu quer tá dentro.»
+    </p>
+
+    <p class="text">
+      O rosto dele se iluminou:
+    </p>
+
+    <p class="dialogue">
+      «Isso aí, mano! Era exatamente isso que eu queria!
+      Tu acha que ele come muito capim?»
+    </p>
+
+    <p class="text">
+      E foi assim que eu conheci o pequeno príncipe.
+    </p>
+
+    <span class="ornament">✦ ✦ ✦</span>
+  </div>
+</section>
+
+<!-- ╔══════════════════════════════════════╗ -->
+<!-- ║     V · O ASTEROIDE B-612            ║ -->
+<!-- ╚══════════════════════════════════════╝ -->
+<section class="chapter chapter-night" id="asteroide">
+  <div class="chapter-inner">
+    <span class="chapter-number">capítulo IV</span>
+    <h2>O Morro Lá de Cima</h2>
+
+    <!-- Illustration: the tiny planet with volcanoes and baobabs -->
+    <div class="illustration">
+      <svg viewBox="0 0 360 360" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <radialGradient id="night-planet" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="#6BAA7F"/>
+            <stop offset="50%" stop-color="#5B9470"/>
+            <stop offset="100%" stop-color="#3A6B50"/>
+          </radialGradient>
+          <radialGradient id="night-glow" cx="50%" cy="50%" r="55%">
+            <stop offset="0%" stop-color="#F2C94C" stop-opacity="0.15"/>
+            <stop offset="100%" stop-color="#F2C94C" stop-opacity="0"/>
+          </radialGradient>
+          <filter id="soft-glow">
+            <feGaussianBlur stdDeviation="2" result="blur"/>
+            <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+          </filter>
+        </defs>
+
+        <!-- stars around -->
+        <circle cx="40" cy="50" r="1.5" fill="#FFF3C4" class="twinkle" style="--dur:3s"/>
+        <circle cx="310" cy="80" r="1" fill="#FFF3C4" class="twinkle" style="--dur:4s;--delay:1s"/>
+        <circle cx="70" cy="290" r="1.2" fill="#FFF3C4" class="twinkle" style="--dur:3.5s;--delay:0.5s"/>
+        <circle cx="290" cy="270" r="0.8" fill="#FFF3C4" class="twinkle" style="--dur:4.5s;--delay:2s"/>
+        <circle cx="330" cy="180" r="1.3" fill="#FFF3C4" class="twinkle" style="--dur:3.2s;--delay:1.5s"/>
+        <circle cx="25" cy="170" r="0.9" fill="#FFF3C4" class="twinkle" style="--dur:5s;--delay:0.8s"/>
+
+        <!-- planet glow -->
+        <circle cx="180" cy="190" r="110" fill="url(#night-glow)"/>
+        <!-- planet -->
+        <circle cx="180" cy="190" r="75" fill="url(#night-planet)" opacity="0.85"/>
+
+        <!-- texture patches -->
+        <circle cx="165" cy="180" r="10" fill="#5B9470" opacity="0.4"/>
+        <circle cx="195" cy="205" r="15" fill="#4A8360" opacity="0.3"/>
+        <circle cx="175" cy="155" r="8" fill="#6BAA7F" opacity="0.3"/>
+
+        <!-- small volcanoes -->
+        <path d="M155 140 L150 130 L145 140" stroke="#D4734E" stroke-width="1.5" fill="#A0453A" fill-opacity="0.5" stroke-linecap="round"/>
+        <!-- smoke puff -->
+        <circle cx="150" cy="126" r="3" fill="rgba(255,255,255,0.2)"/>
+        <circle cx="148" cy="122" r="2" fill="rgba(255,255,255,0.15)"/>
+
+        <path d="M210 148 L207 140 L204 148" stroke="#D4734E" stroke-width="1.2" fill="#A0453A" fill-opacity="0.4" stroke-linecap="round"/>
+
+        <!-- tiny baobab sprout -->
+        <path d="M200 168 L200 158 Q196 150 192 148 Q198 146 200 148 Q202 146 208 148 Q204 150 200 158" stroke="#8B6B45" stroke-width="1" fill="#6B8B5E" fill-opacity="0.5"/>
+
+        <!-- figure on top -->
+        <g filter="url(#soft-glow)">
+          <!-- legs -->
+          <line x1="178" y1="125" x2="175" y2="113" stroke="#F2C94C" stroke-width="1.5" stroke-linecap="round"/>
+          <line x1="182" y1="125" x2="185" y2="113" stroke="#F2C94C" stroke-width="1.5" stroke-linecap="round"/>
+          <!-- body -->
+          <line x1="180" y1="113" x2="180" y2="95" stroke="#F2C94C" stroke-width="1.5" stroke-linecap="round"/>
+          <!-- scarf -->
+          <path d="M180 100 Q188 94 194 84 Q198 76 195 70" stroke="#D4734E" stroke-width="1.2" fill="none" stroke-linecap="round"/>
+          <!-- arms -->
+          <line x1="180" y1="103" x2="172" y2="98" stroke="#F2C94C" stroke-width="1.2" stroke-linecap="round"/>
+          <line x1="180" y1="103" x2="188" y2="99" stroke="#F2C94C" stroke-width="1.2" stroke-linecap="round"/>
+          <!-- head -->
+          <circle cx="180" cy="89" r="5.5" fill="#F2C94C" opacity="0.85"/>
+          <!-- hair -->
+          <path d="M175 87 Q172 78 176 83 Q171 75 177 81" stroke="#F2C94C" stroke-width="1" fill="none" stroke-linecap="round"/>
+          <path d="M185 87 Q188 78 184 83 Q189 75 183 81" stroke="#F2C94C" stroke-width="1" fill="none" stroke-linecap="round"/>
+          <path d="M180 85 Q179 74 181 80" stroke="#F2C94C" stroke-width="1" fill="none" stroke-linecap="round"/>
+        </g>
+
+        <!-- rose on the planet surface -->
+        <line x1="150" y1="130" x2="148" y2="118" stroke="#6B8B5E" stroke-width="1" stroke-linecap="round"/>
+        <circle cx="148" cy="116" r="3" fill="#C75B6F" opacity="0.7"/>
+        <circle cx="148" cy="116" r="1.5" fill="#E8A0AE" opacity="0.5"/>
+        <!-- glass dome over rose -->
+        <path d="M142 120 Q142 108 148 105 Q154 108 154 120" stroke="rgba(255,255,255,0.3)" stroke-width="0.8" fill="none"/>
+      </svg>
+    </div>
+
+    <p class="text">
+      Demorei pra descobrir de onde ele vinha. O pequeno príncipe, que me fazia
+      um monte de pergunta mas nunca respondia as minhas, foi deixando escapar
+      umas pistas aqui e ali. E assim, pela conversa, fui montando o quebra-cabeça.
+    </p>
+
+    <p class="text">
+      O asteroide dele era desse tamanhinho — mal cabia uma casa, dois vulcões
+      e uma flor. Era o asteroide B-612, que um astrônomo turco avistou uma vez
+      pelo telescópio, mas ninguém acreditou nele porque o cara tava de roupa
+      esquisita. Depois vestiu terno e gravata, repetiu a descoberta, e aí sim
+      todo mundo bateu palma. Assim são os coroa.
+    </p>
+
+    <p class="dialogue">
+      «Lá no meu morro tem três vulcão — dois aceso e um apagado.
+      Mas a gente nunca sabe, né? Então eu limpo os três.
+      De manhã cedo eu acordo, limpo os vulcão, arranco os baobá
+      que tão nascendo antes que fiquem grande, e cuido da minha flor.
+      É uma rotina, sabe? Uma caminhada.»
+    </p>
+
+    <p class="epigraph">
+      As coisas mais bonitas da vida são as que cabem no espaço de um suspiro.
+    </p>
+
+    <span class="ornament" style="color: var(--star);">✦ ✦ ✦</span>
+  </div>
+</section>
+
+<!-- ╔══════════════════════════════════════╗ -->
+<!-- ║     VI · OS PÔR DO SOL              ║ -->
+<!-- ╚══════════════════════════════════════╝ -->
+<section class="chapter chapter-sunset" id="pordosol">
+  <div class="chapter-inner">
+    <span class="chapter-number">capítulo V</span>
+    <h2>Os Pôr do Sol</h2>
+
+    <!-- Illustration: watching sunset on tiny planet -->
+    <div class="illustration">
+      <svg viewBox="0 0 380 280" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="sunset-sky" x1="0%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" stop-color="#5B4A8A" stop-opacity="0.6"/>
+            <stop offset="30%" stop-color="#D4734E" stop-opacity="0.7"/>
+            <stop offset="60%" stop-color="#E8A07A" stop-opacity="0.8"/>
+            <stop offset="100%" stop-color="#F2C94C" stop-opacity="0.6"/>
+          </linearGradient>
+          <radialGradient id="sun-glow" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="#F2C94C"/>
+            <stop offset="50%" stop-color="#F2C94C" stop-opacity="0.5"/>
+            <stop offset="100%" stop-color="#F2C94C" stop-opacity="0"/>
+          </radialGradient>
+        </defs>
+        <!-- sky -->
+        <rect width="380" height="280" fill="url(#sunset-sky)" rx="4"/>
+        <!-- sun -->
+        <circle cx="190" cy="180" r="50" fill="url(#sun-glow)"/>
+        <circle cx="190" cy="180" r="22" fill="#F2C94C" opacity="0.9"/>
+        <!-- horizon line -->
+        <path d="M0 200 Q95 185 190 190 Q285 195 380 188" stroke="#D4734E" stroke-width="0.8" fill="none" opacity="0.5"/>
+
+        <!-- small planet in foreground -->
+        <circle cx="190" cy="130" r="30" fill="#3A6B50" opacity="0.7"/>
+        <!-- figure sitting, watching -->
+        <g transform="translate(185, 98)">
+          <!-- sitting body -->
+          <path d="M0 12 L0 0" stroke="#2D1810" stroke-width="1.5" stroke-linecap="round"/>
+          <!-- legs bent -->
+          <path d="M0 12 L-5 18 L-8 22" stroke="#2D1810" stroke-width="1.5" stroke-linecap="round"/>
+          <path d="M0 12 L5 18 L8 22" stroke="#2D1810" stroke-width="1.5" stroke-linecap="round"/>
+          <!-- head -->
+          <circle cx="0" cy="-5" r="4.5" fill="#2D1810" opacity="0.7"/>
+          <!-- hair -->
+          <path d="M-4 -7 Q-6 -14 -3 -10 Q-7 -16 -2 -12" stroke="#2D1810" stroke-width="0.8" fill="none"/>
+          <path d="M4 -7 Q6 -14 3 -10" stroke="#2D1810" stroke-width="0.8" fill="none"/>
+          <!-- scarf blowing -->
+          <path d="M0 0 Q8 -5 16 -10 Q20 -14 18 -18" stroke="#C75B6F" stroke-width="1" fill="none" stroke-linecap="round"/>
+        </g>
+
+        <!-- chair suggestion -->
+        <path d="M175 120 L175 125 L180 128" stroke="#3A6B50" stroke-width="0.8" fill="none" opacity="0.5"/>
+      </svg>
+    </div>
+
+    <p class="text">
+      Soube logo de uma das melancolias dele: o pequeno príncipe era doido
+      por pôr do sol. No planetinha dele, bastava puxar a cadeira uns passos
+      pra trás e já era outro horário — e ele podia ver o sol se pôr
+      quantas vezes quisesse.
+    </p>
+
+    <p class="dialogue">
+      «Um dia eu vi o sol se pôr quarenta e três vezes.»
+    </p>
+
+    <p class="text">
+      E depois de um silêncio:
+    </p>
+
+    <p class="dialogue">
+      «Tu sabe, né... quando a saudade aperta demais, a gente gosta
+      de pôr do sol.»
+    </p>
+
+    <p class="text">
+      Eu quis perguntar: saudade de quê?
+      Mas o malandro não pergunta quando o silêncio é mais eloquente
+      que a palavra.
+    </p>
+
+    <span class="ornament" style="color: #3A1F15; opacity: 0.3;">· · ·</span>
+  </div>
+</section>
+
+<!-- ╔══════════════════════════════════════╗ -->
+<!-- ║    VII · A FLOR DO MORRO             ║ -->
+<!-- ╚══════════════════════════════════════╝ -->
+<section class="chapter chapter-rose" id="flor">
+  <div class="chapter-inner">
+    <span class="chapter-number">capítulo VI</span>
+    <h2>A Flor</h2>
+
+    <!-- Illustration: the rose under glass dome -->
+    <div class="illustration">
+      <svg viewBox="0 0 300 350" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <radialGradient id="rose-bloom" cx="50%" cy="40%" r="50%">
+            <stop offset="0%" stop-color="#E8A0AE"/>
+            <stop offset="60%" stop-color="#C75B6F"/>
+            <stop offset="100%" stop-color="#A0404F"/>
+          </radialGradient>
+          <linearGradient id="glass-dome" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="rgba(255,255,255,0.15)"/>
+            <stop offset="50%" stop-color="rgba(255,255,255,0.05)"/>
+            <stop offset="100%" stop-color="rgba(255,255,255,0.1)"/>
+          </linearGradient>
+          <filter id="rose-soft">
+            <feGaussianBlur stdDeviation="0.8" result="blur"/>
+            <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+          </filter>
+        </defs>
+
+        <!-- ground surface -->
+        <ellipse cx="150" cy="290" rx="80" ry="12" fill="#8BAA7F" opacity="0.2"/>
+
+        <!-- stem -->
+        <path d="M150 290 L150 200 Q148 195 150 190" stroke="#5B8B4E" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+        <!-- stem curve -->
+        <path d="M150 250 Q145 245 148 238" stroke="#5B8B4E" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+
+        <!-- leaves -->
+        <path d="M150 260 Q135 255 130 248 Q138 252 150 255" fill="#6B8B5E" opacity="0.7"/>
+        <path d="M150 240 Q165 235 172 228 Q164 234 150 237" fill="#6B8B5E" opacity="0.7"/>
+        <path d="M150 275 Q162 268 168 260 Q163 270 150 272" fill="#6B8B5E" opacity="0.6"/>
+
+        <!-- thorns -->
+        <line x1="148" y1="265" x2="143" y2="262" stroke="#5B8B4E" stroke-width="1.2" stroke-linecap="round"/>
+        <line x1="152" y1="248" x2="157" y2="245" stroke="#5B8B4E" stroke-width="1.2" stroke-linecap="round"/>
+        <line x1="149" y1="230" x2="144" y2="227" stroke="#5B8B4E" stroke-width="1.2" stroke-linecap="round"/>
+
+        <!-- rose bloom -->
+        <g filter="url(#rose-soft)">
+          <!-- outer petals -->
+          <ellipse cx="140" cy="185" rx="14" ry="18" fill="#C75B6F" opacity="0.7" transform="rotate(-15 140 185)"/>
+          <ellipse cx="160" cy="185" rx="14" ry="18" fill="#C75B6F" opacity="0.7" transform="rotate(15 160 185)"/>
+          <ellipse cx="145" cy="178" rx="12" ry="16" fill="#D4738A" opacity="0.6" transform="rotate(-30 145 178)"/>
+          <ellipse cx="155" cy="178" rx="12" ry="16" fill="#D4738A" opacity="0.6" transform="rotate(30 155 178)"/>
+          <!-- inner petals -->
+          <ellipse cx="150" cy="180" rx="10" ry="14" fill="#E8A0AE" opacity="0.7"/>
+          <ellipse cx="148" cy="176" rx="7" ry="10" fill="#F0C0CC" opacity="0.6" transform="rotate(-10 148 176)"/>
+          <ellipse cx="152" cy="176" rx="7" ry="10" fill="#F0C0CC" opacity="0.6" transform="rotate(10 152 176)"/>
+          <!-- center -->
+          <circle cx="150" cy="175" r="5" fill="#E8A0AE" opacity="0.8"/>
+          <circle cx="150" cy="174" r="2.5" fill="#F5D0D8"/>
+        </g>
+
+        <!-- glass dome -->
+        <path d="M100 290 Q100 140 150 120 Q200 140 200 290"
+              fill="url(#glass-dome)" stroke="rgba(255,255,255,0.25)" stroke-width="1"/>
+        <!-- dome reflection -->
+        <path d="M118 250 Q115 200 135 160" stroke="rgba(255,255,255,0.12)" stroke-width="2" fill="none" stroke-linecap="round"/>
+      </svg>
+    </div>
+
+    <p class="text">
+      No asteroide do pequeno príncipe sempre brotaram flores simples,
+      de uma pétala só — não davam trabalho e não incomodavam ninguém.
+      Mas um dia germinou uma semente que tinha vindo sabe-se lá de onde,
+      e o príncipe vigiou de perto aquele broto diferente de todos os outros.
+    </p>
+
+    <p class="text">
+      A flor se arrumou devagarinho por trás das cortinas verdes.
+      Escolheu as cores com cuidado. Se vestiu devagar, ajeitou
+      as pétalas uma por uma. Não queria sair toda amassada
+      feito papoula. Queria aparecer no esplendor inteiro da sua beleza.
+    </p>
+
+    <p class="dialogue">
+      «Ah, acabei de acordar... desculpa, tô toda despenteada...»
+    </p>
+
+    <p class="text">
+      Era vaidosa, cheia de exigência, e às vezes falava umas coisas
+      que deixava o príncipe sem chão. Pedia abrigo do vento,
+      reclamava da corrente de ar, e logo ela, que tinha vindo de semente
+      voando pelo universo.
+    </p>
+
+    <p class="text">
+      Ele não soube entender naquela época. Era novo demais.
+      Olhava pro espinho e achava que era defeito.
+      Não sabia que espinho é o jeito que a flor tem de dizer
+      que tá com medo do mundo.
+    </p>
+
+    <p class="dialogue">
+      «Eu devia ter adivinhado a ternura por trás de tanta manha.
+      As flores são complicadas assim. Mas eu era moleque demais
+      pra saber amar.»
+    </p>
+
+    <span class="ornament">✦ ✦ ✦</span>
+  </div>
+</section>
+
+<!-- ╔══════════════════════════════════════╗ -->
+<!-- ║  VIII · O CORRE PELAS QUEBRADAS      ║ -->
+<!-- ╚══════════════════════════════════════╝ -->
+<section class="chapter" id="quebradas">
+  <div class="chapter-inner">
+    <span class="chapter-number">capítulo VII</span>
+    <h2>O Corre pelas Quebradas</h2>
+
+    <p class="text">
+      O príncipe aproveitou uma revoada de pássaros selvagens pra dar no pé.
+      Antes de sair, limpou os vulcões direitinho, arrancou os últimos brotos
+      de baobá, regou a flor pela última vez e botou nela a redoma de vidro.
+      E aí sentiu vontade de chorar.
+    </p>
+
+    <p class="dialogue">
+      «Adeus,» — ele disse pra flor.
+    </p>
+
+    <p class="text">
+      Ela não respondeu. Ele repetiu. A flor tossiu. Mas não era de resfriado.
+    </p>
+
+    <p class="dialogue">
+      «Fui boba. Me desculpa. Tenta ser feliz, vai.»
+    </p>
+
+    <p class="text">
+      Ele ficou espantado com a falta de reclamação. Ficou ali parado,
+      com a redoma no ar, sem entender aquela mansidão.
+    </p>
+
+    <p class="dialogue">
+      «É, eu gosto de ti,» — disse a flor. — «Tu não soube,
+      e a culpa foi minha. Tanto faz agora. Mas tu foi tão bobo
+      quanto eu. Tenta ser feliz. Larga essa redoma aí, não quero mais.»
+    </p>
+
+    <p class="dialogue">
+      «Mas o vento...»
+    </p>
+
+    <p class="dialogue">
+      «Não sou tão resfriada assim. O ar fresco da noite me faz bem.
+      Sou uma flor, ué.»
+    </p>
+
+    <div class="star-divider"><span>✦</span></div>
+
+    <!-- Illustration: the various kings/planets, simplified -->
+    <div class="illustration illustration-wide">
+      <svg viewBox="0 0 500 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <radialGradient id="p1" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="#D4734E" stop-opacity="0.6"/>
+            <stop offset="100%" stop-color="#A0453A" stop-opacity="0.4"/>
+          </radialGradient>
+          <radialGradient id="p2" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="#C4956A" stop-opacity="0.6"/>
+            <stop offset="100%" stop-color="#8B6B45" stop-opacity="0.4"/>
+          </radialGradient>
+          <radialGradient id="p3" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="#7EB5D6" stop-opacity="0.6"/>
+            <stop offset="100%" stop-color="#3A6B8C" stop-opacity="0.4"/>
+          </radialGradient>
+          <radialGradient id="p4" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="#8BAA7F" stop-opacity="0.6"/>
+            <stop offset="100%" stop-color="#5B7B50" stop-opacity="0.4"/>
+          </radialGradient>
+          <radialGradient id="p5" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="#F2C94C" stop-opacity="0.6"/>
+            <stop offset="100%" stop-color="#C4956A" stop-opacity="0.4"/>
+          </radialGradient>
+        </defs>
+
+        <!-- Planet 1: The King -->
+        <circle cx="60" cy="120" r="32" fill="url(#p1)"/>
+        <!-- tiny crown -->
+        <path d="M52 88 L55 80 L58 86 L61 78 L64 86 L67 80 L70 88 Z" fill="#F2C94C" opacity="0.7"/>
+        <!-- figure -->
+        <line x1="60" y1="100" x2="60" y2="90" stroke="#5C4A35" stroke-width="1.2" stroke-linecap="round"/>
+        <circle cx="60" cy="86" r="3.5" fill="#5C4A35" opacity="0.6"/>
+
+        <!-- Planet 2: The Vain Man -->
+        <circle cx="160" cy="100" r="28" fill="url(#p2)"/>
+        <!-- figure with hat -->
+        <line x1="160" y1="82" x2="160" y2="72" stroke="#5C4A35" stroke-width="1.2" stroke-linecap="round"/>
+        <circle cx="160" cy="68" r="3.5" fill="#5C4A35" opacity="0.6"/>
+        <!-- top hat -->
+        <rect x="155" y="58" width="10" height="8" rx="1" fill="#5C4A35" opacity="0.5"/>
+        <rect x="153" y="65" width="14" height="2" rx="1" fill="#5C4A35" opacity="0.5"/>
+
+        <!-- Planet 3: The Drunkard -->
+        <circle cx="250" cy="125" r="25" fill="url(#p3)"/>
+        <!-- figure hunched -->
+        <path d="M250 108 Q248 100 250 96" stroke="#5C4A35" stroke-width="1.2" fill="none" stroke-linecap="round"/>
+        <circle cx="250" cy="93" r="3" fill="#5C4A35" opacity="0.6"/>
+        <!-- bottle -->
+        <rect x="256" y="100" width="3" height="8" rx="1" fill="#5C4A35" opacity="0.4"/>
+
+        <!-- Planet 4: The Businessman -->
+        <circle cx="335" cy="105" r="27" fill="url(#p4)"/>
+        <line x1="335" y1="90" x2="335" y2="80" stroke="#5C4A35" stroke-width="1.2" stroke-linecap="round"/>
+        <circle cx="335" cy="76" r="3.5" fill="#5C4A35" opacity="0.6"/>
+        <!-- papers -->
+        <rect x="340" y="82" width="6" height="8" rx="0.5" fill="#E8D4A8" opacity="0.5" transform="rotate(10 343 86)"/>
+
+        <!-- Planet 5: The Lamplighter -->
+        <circle cx="440" cy="115" r="30" fill="url(#p5)"/>
+        <line x1="440" y1="98" x2="440" y2="85" stroke="#5C4A35" stroke-width="1.2" stroke-linecap="round"/>
+        <circle cx="440" cy="81" r="3.5" fill="#5C4A35" opacity="0.6"/>
+        <!-- lamp -->
+        <line x1="447" y1="88" x2="447" y2="78" stroke="#C4956A" stroke-width="1"/>
+        <circle cx="447" cy="75" r="3" fill="#F2C94C" opacity="0.6"/>
+        <circle cx="447" cy="75" r="5" fill="#F2C94C" opacity="0.15"/>
+
+        <!-- connection paths between planets -->
+        <path d="M90 110 Q125 85 135 95" stroke="#C4956A" stroke-width="0.5" stroke-dasharray="3 4" fill="none" opacity="0.4"/>
+        <path d="M186 108 Q218 120 228 118" stroke="#C4956A" stroke-width="0.5" stroke-dasharray="3 4" fill="none" opacity="0.4"/>
+        <path d="M273 118 Q304 100 310 100" stroke="#C4956A" stroke-width="0.5" stroke-dasharray="3 4" fill="none" opacity="0.4"/>
+        <path d="M360 112 Q400 120 412 118" stroke="#C4956A" stroke-width="0.5" stroke-dasharray="3 4" fill="none" opacity="0.4"/>
+      </svg>
+    </div>
+
+    <p class="text">
+      Visitou os planetas vizinhos, cada um com seu morador solitário.
+      Viu um rei que reinava sobre coisa nenhuma e mandava no vento.
+      Um vaidoso que só queria palma. Um bebum que bebia pra esquecer
+      a vergonha de beber. Um homem de negócio que ficava o dia inteiro
+      contando estrela, achando que eram dele.
+    </p>
+
+    <p class="text">
+      E viu o acendedor de lampião — esse sim lhe pareceu menos absurdo
+      que os outros, porque pelo menos o trabalho dele servia pra alguém.
+      O acendedor acendia e apagava, acendia e apagava, porque o planeta
+      girava cada vez mais rápido e ele não tinha mais tempo
+      de descansar.
+    </p>
+
+    <p class="dialogue">
+      «Esse aí pelo menos não vive só pra si.
+      É o único que eu conseguiria chamar de parceiro.»
+    </p>
+
+    <p class="text">
+      Os coroa são mesmo muito estranhos — pensou o príncipe
+      durante a viagem.
+    </p>
+
+    <span class="ornament">· · ·</span>
+  </div>
+</section>
+
+<!-- ╔══════════════════════════════════════╗ -->
+<!-- ║       IX · A RAPOSA                  ║ -->
+<!-- ╚══════════════════════════════════════╝ -->
+<section class="chapter chapter-garden" id="raposa">
+  <div class="chapter-inner">
+    <span class="chapter-number">capítulo VIII</span>
+    <h2>A Raposa</h2>
+
+    <!-- Illustration: the fox -->
+    <div class="illustration">
+      <svg viewBox="0 0 380 300" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="fox-body" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#E8A07A"/>
+            <stop offset="100%" stop-color="#C4956A"/>
+          </linearGradient>
+          <linearGradient id="wheat-field" x1="0%" y1="100%" x2="0%" y2="0%">
+            <stop offset="0%" stop-color="#8BAA7F" stop-opacity="0.3"/>
+            <stop offset="100%" stop-color="#F2C94C" stop-opacity="0.1"/>
+          </linearGradient>
+        </defs>
+
+        <!-- wheat field suggestion -->
+        <rect x="0" y="180" width="380" height="120" fill="url(#wheat-field)"/>
+        <!-- wheat stalks -->
+        <g stroke="#C4956A" stroke-width="1" fill="none" stroke-linecap="round" opacity="0.4">
+          <path d="M20 300 Q22 260 18 220 M18 240 Q12 235 18 232 M18 250 Q24 245 18 242"/>
+          <path d="M45 300 Q47 255 43 210 M43 230 Q37 225 43 222 M43 240 Q49 235 43 232"/>
+          <path d="M70 300 Q72 265 68 225 M68 245 Q62 240 68 237"/>
+          <path d="M300 300 Q302 258 298 215 M298 235 Q292 230 298 227 M298 245 Q304 240 298 237"/>
+          <path d="M325 300 Q327 262 323 220 M323 240 Q317 235 323 232"/>
+          <path d="M350 300 Q352 268 348 230 M348 248 Q354 243 348 240"/>
+          <path d="M95 300 Q97 270 93 235 M93 255 Q87 250 93 247"/>
+          <path d="M370 300 Q372 272 368 240"/>
+        </g>
+
+        <!-- fox body -->
+        <g transform="translate(100, 165)">
+          <!-- tail -->
+          <path d="M80 30 Q110 15 120 -5 Q125 -15 115 -10 Q105 -5 100 10 Q95 20 80 30"
+                fill="#E8A07A" opacity="0.7"/>
+          <path d="M115 -10 Q120 -18 112 -14 Q108 -8 105 -2"
+                fill="white" opacity="0.4"/>
+          <!-- body -->
+          <ellipse cx="55" cy="35" rx="35" ry="18" fill="url(#fox-body)" opacity="0.8"/>
+          <!-- legs -->
+          <line x1="35" y1="48" x2="32" y2="65" stroke="#C4956A" stroke-width="2" stroke-linecap="round"/>
+          <line x1="45" y1="50" x2="43" y2="65" stroke="#C4956A" stroke-width="2" stroke-linecap="round"/>
+          <line x1="65" y1="50" x2="68" y2="65" stroke="#C4956A" stroke-width="2" stroke-linecap="round"/>
+          <line x1="75" y1="48" x2="78" y2="65" stroke="#C4956A" stroke-width="2" stroke-linecap="round"/>
+          <!-- neck -->
+          <path d="M25 30 Q15 20 10 10" stroke="#C4956A" stroke-width="3" fill="none" stroke-linecap="round"/>
+          <!-- head -->
+          <ellipse cx="8" cy="5" rx="14" ry="11" fill="#E8A07A" opacity="0.8" transform="rotate(-10 8 5)"/>
+          <!-- ears -->
+          <path d="M0 -2 L-8 -18 L2 -6" fill="#E8A07A" opacity="0.8"/>
+          <path d="M-6 -15 L-3 -8" stroke="#C75B6F" stroke-width="1.5" opacity="0.3"/>
+          <path d="M14 -4 L18 -20 L20 -6" fill="#E8A07A" opacity="0.8"/>
+          <path d="M17 -17 L19 -8" stroke="#C75B6F" stroke-width="1.5" opacity="0.3"/>
+          <!-- snout -->
+          <path d="M-4 5 Q-10 8 -12 6 Q-10 4 -4 3" fill="#2D2418" opacity="0.15"/>
+          <!-- nose -->
+          <circle cx="-10" cy="5" r="2" fill="#2D2418" opacity="0.6"/>
+          <!-- eye -->
+          <circle cx="2" cy="0" r="2" fill="#2D2418" opacity="0.7"/>
+          <circle cx="2.5" cy="-0.5" r="0.6" fill="white" opacity="0.6"/>
+          <!-- chest white -->
+          <ellipse cx="20" cy="25" rx="10" ry="12" fill="white" opacity="0.2"/>
+        </g>
+
+        <!-- prince figure sitting nearby -->
+        <g transform="translate(260, 195)">
+          <path d="M0 10 L0 -5" stroke="#F2C94C" stroke-width="1.5" stroke-linecap="round"/>
+          <path d="M0 10 L-6 18" stroke="#F2C94C" stroke-width="1.5" stroke-linecap="round"/>
+          <path d="M0 10 L6 18" stroke="#F2C94C" stroke-width="1.5" stroke-linecap="round"/>
+          <circle cx="0" cy="-10" r="5" fill="#F2C94C" opacity="0.85"/>
+          <path d="M-4 -12 Q-6 -20 -3 -16 Q-7 -22 -2 -18" stroke="#F2C94C" stroke-width="0.8" fill="none"/>
+          <path d="M4 -12 Q6 -20 3 -16" stroke="#F2C94C" stroke-width="0.8" fill="none"/>
+          <!-- scarf -->
+          <path d="M0 -4 Q6 -8 10 -14" stroke="#D4734E" stroke-width="1" fill="none" stroke-linecap="round"/>
+        </g>
+      </svg>
+    </div>
+
+    <p class="text">
+      Quando chegou à Terra, o príncipe não encontrou ninguém de primeira.
+      Até que apareceu uma raposa, debaixo de uma macieira.
+    </p>
+
+    <p class="dialogue">
+      «Vem cá brincar comigo,» — pediu o príncipe. — «Tô tão na fossa...»
+    </p>
+
+    <p class="dialogue">
+      «Não posso, não,» — disse a raposa. — «Não sou cativada.»
+    </p>
+
+    <p class="dialogue">
+      «Que é isso — cativada?»
+    </p>
+
+    <p class="dialogue">
+      «É uma coisa muito esquecida. Quer dizer criar laço.
+      Tu pra mim, por enquanto, é só um moleque igual a cem mil
+      outros moleque. Não preciso de ti. Tu não precisa de mim.
+      Sou pra ti só uma raposa igual a cem mil outras raposa.
+      Mas se tu me cativar, a gente vai precisar um do outro.
+      Tu vai ser único no mundo pra mim. Eu vou ser única no mundo pra ti.»
+    </p>
+
+    <div class="star-divider"><span>✦</span></div>
+
+    <p class="text">
+      O príncipe entendeu. Voltou todo dia, no mesmo horário.
+      Sentava um pouco mais perto a cada vez. A raposa explicou:
+    </p>
+
+    <p class="dialogue">
+      «Se tu vem a qualquer hora, eu nunca sei quando arrumar o coração.
+      Precisa de ritual. É isso que faz um dia ser diferente dos outros dias,
+      uma hora ser diferente das outras horas.»
+    </p>
+
+    <p class="text">
+      Quando chegou a hora de partir, a raposa sentiu o peito apertado.
+    </p>
+
+    <p class="dialogue">
+      «Vou chorar,» — disse a raposa.
+    </p>
+
+    <p class="dialogue">
+      «A culpa é tua. Eu não queria te fazer mal.
+      Tu que quis ser cativada.»
+    </p>
+
+    <p class="dialogue">
+      «Quis sim.»
+    </p>
+
+    <p class="dialogue">
+      «Mas tu vai chorar!»
+    </p>
+
+    <p class="dialogue">
+      «Vou.»
+    </p>
+
+    <p class="dialogue">
+      «Então tu não ganhou nada com isso.»
+    </p>
+
+    <p class="dialogue">
+      «Ganhei sim. Ganhei a cor do trigo.»
+    </p>
+
+    <p class="text">
+      E na hora de ir embora, a raposa falou aquilo que ficou gravado
+      pra sempre:
+    </p>
+
+    <p class="dialogue" style="font-size: 1.35rem; color: var(--ink); margin: 40px 0;">
+      «Só se vê bem com o coração.<br>
+      O essencial é invisível pros olhos.»
+    </p>
+
+    <p class="dialogue">
+      «Tu te torna responsável por aquilo que cativou.<br>
+      Tu é responsável pela tua rosa.»
+    </p>
+
+    <span class="ornament">✦ ✦ ✦</span>
+  </div>
+</section>
+
+<!-- ╔══════════════════════════════════════╗ -->
+<!-- ║      X · O POÇO                      ║ -->
+<!-- ╚══════════════════════════════════════╝ -->
+<section class="chapter chapter-desert" id="poco">
+  <div class="chapter-inner">
+    <span class="chapter-number">capítulo IX</span>
+    <h2>O Poço</h2>
+
+    <!-- Illustration: the well in the desert -->
+    <div class="illustration">
+      <svg viewBox="0 0 340 320" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="well-stone" x1="0%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" stop-color="#C4956A"/>
+            <stop offset="100%" stop-color="#A08860"/>
+          </linearGradient>
+          <radialGradient id="water-glow" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="#7EB5D6" stop-opacity="0.5"/>
+            <stop offset="100%" stop-color="#3A6B8C" stop-opacity="0.3"/>
+          </radialGradient>
+        </defs>
+
+        <!-- desert ground -->
+        <path d="M0 260 Q85 245 170 255 Q255 265 340 250 L340 320 L0 320 Z" fill="#D4B896" opacity="0.5"/>
+
+        <!-- well structure -->
+        <!-- base stones -->
+        <ellipse cx="170" cy="255" rx="50" ry="15" fill="url(#well-stone)" opacity="0.7" stroke="#8B6B45" stroke-width="1"/>
+        <rect x="125" y="210" width="90" height="45" rx="3" fill="url(#well-stone)" opacity="0.6" stroke="#8B6B45" stroke-width="1"/>
+        <!-- stone texture -->
+        <line x1="130" y1="225" x2="210" y2="225" stroke="#8B6B45" stroke-width="0.5" opacity="0.4"/>
+        <line x1="130" y1="238" x2="210" y2="238" stroke="#8B6B45" stroke-width="0.5" opacity="0.4"/>
+        <line x1="155" y1="210" x2="155" y2="255" stroke="#8B6B45" stroke-width="0.5" opacity="0.3"/>
+        <line x1="185" y1="210" x2="185" y2="255" stroke="#8B6B45" stroke-width="0.5" opacity="0.3"/>
+
+        <!-- water inside (dark circle at top) -->
+        <ellipse cx="170" cy="212" rx="38" ry="10" fill="url(#water-glow)"/>
+
+        <!-- posts -->
+        <line x1="128" y1="210" x2="128" y2="140" stroke="#8B6B45" stroke-width="3" stroke-linecap="round"/>
+        <line x1="212" y1="210" x2="212" y2="140" stroke="#8B6B45" stroke-width="3" stroke-linecap="round"/>
+        <!-- crossbar -->
+        <line x1="122" y1="142" x2="218" y2="142" stroke="#8B6B45" stroke-width="3" stroke-linecap="round"/>
+
+        <!-- rope -->
+        <path d="M170 142 L170 170 Q172 180 170 190" stroke="#A08860" stroke-width="1.2" fill="none"/>
+        <!-- bucket -->
+        <path d="M162 190 L162 205 L178 205 L178 190" stroke="#8B6B45" stroke-width="1.2" fill="#C4956A" fill-opacity="0.3"/>
+        <line x1="160" y1="190" x2="180" y2="190" stroke="#8B6B45" stroke-width="1.5"/>
+        <!-- handle -->
+        <path d="M165 190 Q170 184 175 190" stroke="#8B6B45" stroke-width="1" fill="none"/>
+
+        <!-- pulley wheel -->
+        <circle cx="170" cy="142" r="5" fill="none" stroke="#8B6B45" stroke-width="1.5"/>
+        <circle cx="170" cy="142" r="1.5" fill="#8B6B45"/>
+
+        <!-- two figures near the well -->
+        <!-- aviator pulling rope -->
+        <g transform="translate(230, 210)">
+          <line x1="0" y1="40" x2="-3" y2="25" stroke="#5C4A35" stroke-width="1.5" stroke-linecap="round"/>
+          <line x1="5" y1="40" x2="8" y2="25" stroke="#5C4A35" stroke-width="1.5" stroke-linecap="round"/>
+          <line x1="2" y1="25" x2="2" y2="8" stroke="#5C4A35" stroke-width="1.5" stroke-linecap="round"/>
+          <path d="M2 15 Q-8 10 -15 5" stroke="#5C4A35" stroke-width="1.2" fill="none" stroke-linecap="round"/>
+          <path d="M2 15 Q-5 12 -10 8" stroke="#5C4A35" stroke-width="1.2" fill="none" stroke-linecap="round"/>
+          <circle cx="2" cy="3" r="5" fill="#E8D4A8" stroke="#5C4A35" stroke-width="0.8"/>
+        </g>
+
+        <!-- prince sitting on well edge -->
+        <g transform="translate(138, 195)">
+          <path d="M0 8 L0 -5" stroke="#F2C94C" stroke-width="1.3" stroke-linecap="round"/>
+          <path d="M0 8 L-5 14" stroke="#F2C94C" stroke-width="1.3" stroke-linecap="round"/>
+          <path d="M0 8 L5 2" stroke="#F2C94C" stroke-width="1.3" stroke-linecap="round"/>
+          <circle cx="0" cy="-9" r="4.5" fill="#F2C94C" opacity="0.85"/>
+          <path d="M-3 -11 Q-5 -18 -2 -14" stroke="#F2C94C" stroke-width="0.8" fill="none"/>
+          <path d="M3 -11 Q5 -18 2 -14" stroke="#F2C94C" stroke-width="0.8" fill="none"/>
+          <path d="M0 -4 Q5 -8 8 -14" stroke="#D4734E" stroke-width="1" fill="none" stroke-linecap="round"/>
+        </g>
+
+        <!-- stars in sky (it's dawn) -->
+        <circle cx="50" cy="40" r="1" fill="#C4956A" opacity="0.3"/>
+        <circle cx="280" cy="60" r="0.8" fill="#C4956A" opacity="0.25"/>
+        <circle cx="100" cy="80" r="0.6" fill="#C4956A" opacity="0.2"/>
+      </svg>
+    </div>
+
+    <p class="text">
+      No oitavo dia no deserto, enquanto eu tomava meu último gole d'água,
+      o príncipe disse:
+    </p>
+
+    <p class="dialogue">
+      «Bonito, né, o deserto.»
+    </p>
+
+    <p class="text">
+      E era verdade. O deserto era bonito. Sentei na areia e não vi nada.
+      Mas havia alguma coisa ali que brilhava em silêncio.
+    </p>
+
+    <p class="dialogue">
+      «O que faz o deserto bonito é que ele esconde um poço
+      em algum lugar.»
+    </p>
+
+    <p class="text">
+      Caminhamos horas. E quando achamos o poço, o príncipe riu.
+      A roldana cantou, a água tremeu no balde como um presente,
+      e eu levantei até os lábios dele.
+    </p>
+
+    <p class="dialogue">
+      «Essa água é mais que água. Ela nasceu da caminhada debaixo
+      das estrelas, do canto da roldana, da força do meu braço.
+      É boa pro coração, que nem presente.»
+    </p>
+
+    <p class="text">
+      Ele tinha razão. A água que a gente carrega com esforço
+      não é a mesma que sai da torneira. Tem gosto de madrugada,
+      de sacrifício, de estrada andada. Quem nunca caminhou
+      no escuro não sabe o valor de um gole d'água no amanhecer.
+    </p>
+
+    <span class="ornament">✦ ✦ ✦</span>
+  </div>
+</section>
+
+<!-- ╔══════════════════════════════════════╗ -->
+<!-- ║    XI · A COBRA E A PARTIDA          ║ -->
+<!-- ╚══════════════════════════════════════╝ -->
+<section class="chapter chapter-night" id="cobra">
+  <div class="chapter-inner">
+    <span class="chapter-number">capítulo X</span>
+    <h2>A Partida</h2>
+
+    <!-- Illustration: the snake -->
+    <div class="illustration illustration-small">
+      <svg viewBox="0 0 200 250" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="snake-body" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#F2C94C" stop-opacity="0.7"/>
+            <stop offset="100%" stop-color="#C4956A" stop-opacity="0.6"/>
+          </linearGradient>
+        </defs>
+        <!-- snake coiled -->
+        <path d="M100 220 Q60 210 50 180 Q40 150 65 130 Q90 110 110 125
+                 Q130 140 120 165 Q110 185 90 180 Q70 175 80 155
+                 Q88 140 100 145 Q108 148 105 158 Q102 165 98 160"
+              stroke="url(#snake-body)" stroke-width="3" fill="none" stroke-linecap="round"/>
+        <!-- snake head -->
+        <circle cx="98" cy="158" r="4" fill="#F2C94C" opacity="0.7"/>
+        <!-- eye -->
+        <circle cx="96" cy="156" r="1" fill="#2D2418"/>
+        <!-- tongue -->
+        <path d="M94 159 L88 162 M88 162 L86 160 M88 162 L86 164" stroke="#D4734E" stroke-width="0.6" stroke-linecap="round"/>
+
+        <!-- prince figure standing near -->
+        <g transform="translate(140, 160)">
+          <line x1="0" y1="55" x2="-2" y2="40" stroke="#F2C94C" stroke-width="1.3" stroke-linecap="round"/>
+          <line x1="4" y1="55" x2="6" y2="40" stroke="#F2C94C" stroke-width="1.3" stroke-linecap="round"/>
+          <line x1="2" y1="40" x2="2" y2="22" stroke="#F2C94C" stroke-width="1.3" stroke-linecap="round"/>
+          <line x1="2" y1="30" x2="-5" y2="26" stroke="#F2C94C" stroke-width="1" stroke-linecap="round"/>
+          <line x1="2" y1="30" x2="9" y2="27" stroke="#F2C94C" stroke-width="1" stroke-linecap="round"/>
+          <circle cx="2" cy="17" r="4.5" fill="#F2C94C" opacity="0.85"/>
+          <path d="M-2 15 Q-4 7 -1 11 Q-5 4 0 10" stroke="#F2C94C" stroke-width="0.8" fill="none"/>
+          <path d="M6 15 Q8 7 5 11" stroke="#F2C94C" stroke-width="0.8" fill="none"/>
+          <path d="M2 22 Q8 18 12 10" stroke="#D4734E" stroke-width="1" fill="none" stroke-linecap="round"/>
+        </g>
+
+        <!-- sand -->
+        <path d="M0 230 Q50 222 100 228 Q150 234 200 225 L200 250 L0 250 Z" fill="#D4B896" opacity="0.2"/>
+      </svg>
+    </div>
+
+    <p class="text">
+      No dia seguinte o príncipe me disse, com aquela voz mansa:
+    </p>
+
+    <p class="dialogue">
+      «Hoje faz um ano. Minha estrela vai ficar bem em cima
+      do lugar onde eu caí.»
+    </p>
+
+    <p class="text">
+      Tinha algo na voz dele que me gelou.
+    </p>
+
+    <p class="dialogue">
+      «Parceiro, tu tá me escondendo alguma parada, não tá?»
+    </p>
+
+    <p class="text">
+      Ele não respondeu a pergunta. Só disse:
+    </p>
+
+    <p class="dialogue">
+      «Vai parecer que eu fui embora. Vai parecer que eu sofri.
+      Vai parecer tudo isso. Não acredita, não.
+      Eu só não podia levar esse corpo — é pesado demais.»
+    </p>
+
+    <p class="text">
+      Eu fiquei quieto.
+    </p>
+
+    <p class="dialogue">
+      «Mas é firmeza, irmão. Olha pro céu de noite. Como eu moro numa estrela,
+      como eu vou tá rindo numa delas, então vai ser como se todas as estrelas
+      estivessem rindo pra ti. Tu vai ter estrelas que sabem gargalhar.»
+    </p>
+
+    <p class="text">
+      E ele mesmo riu.
+    </p>
+
+    <p class="dialogue">
+      «E quando tu tiver consolado — a gente sempre se consola —
+      tu vai ficar contente de ter me conhecido. Tu vai ser sempre
+      meu parceiro. E vai ter vontade de rir comigo.
+      Aí tu abre a janela de noite, e pronto.
+      E os teus amigos vão achar esquisito tu rindo pro céu.
+      E tu diz: é, as estrelas, elas sempre me fazem rir.
+      E eles vão achar que tu pirou. Vai ser a minha sacanagenzinha contigo.»
+    </p>
+
+    <p class="text">
+      E ele riu de novo.
+    </p>
+
+    <p class="dialogue">
+      «Vai ser como se eu tivesse te dado, em vez de estrelas,
+      um monte de guizinhos que sabem rir...»
+    </p>
+
+    <span class="ornament" style="color: var(--star);">· · ·</span>
+  </div>
+</section>
+
+<!-- ╔══════════════════════════════════════╗ -->
+<!-- ║     XII · AS ESTRELAS / FINAL        ║ -->
+<!-- ╚══════════════════════════════════════╝ -->
+<section class="chapter chapter-final" id="estrelas">
+  <div class="chapter-inner">
+    <span class="chapter-number">capítulo XI</span>
+    <h2>As Estrelas Que Sabem Rir</h2>
+
+    <!-- Illustration: the night sky, a single star brighter than others -->
+    <div class="illustration">
+      <svg viewBox="0 0 400 400" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <radialGradient id="bright-star" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="#FFF3C4"/>
+            <stop offset="30%" stop-color="#F2C94C" stop-opacity="0.6"/>
+            <stop offset="100%" stop-color="#F2C94C" stop-opacity="0"/>
+          </radialGradient>
+          <filter id="star-blur">
+            <feGaussianBlur stdDeviation="1.5"/>
+          </filter>
+        </defs>
+
+        <!-- many small stars -->
+        <circle cx="45" cy="30" r="0.8" fill="#FFF3C4" class="twinkle" style="--dur:4s;--delay:0s"/>
+        <circle cx="120" cy="55" r="0.6" fill="#FFF3C4" class="twinkle" style="--dur:3.5s;--delay:1s"/>
+        <circle cx="200" cy="25" r="0.7" fill="#FFF3C4" class="twinkle" style="--dur:5s;--delay:0.5s"/>
+        <circle cx="280" cy="40" r="0.9" fill="#FFF3C4" class="twinkle" style="--dur:3.2s;--delay:2s"/>
+        <circle cx="350" cy="60" r="0.5" fill="#FFF3C4" class="twinkle" style="--dur:4.5s;--delay:0.3s"/>
+        <circle cx="70" cy="100" r="0.7" fill="#FFF3C4" class="twinkle" style="--dur:3.8s;--delay:1.5s"/>
+        <circle cx="160" cy="120" r="0.6" fill="#FFF3C4" class="twinkle" style="--dur:4.2s;--delay:0.8s"/>
+        <circle cx="310" cy="110" r="0.8" fill="#FFF3C4" class="twinkle" style="--dur:3.6s;--delay:2.5s"/>
+        <circle cx="380" cy="130" r="0.5" fill="#FFF3C4" class="twinkle" style="--dur:5.2s;--delay:0.1s"/>
+        <circle cx="25" cy="170" r="0.6" fill="#FFF3C4" class="twinkle" style="--dur:4.8s;--delay:1.2s"/>
+        <circle cx="100" cy="190" r="0.8" fill="#FFF3C4" class="twinkle" style="--dur:3.4s;--delay:2.2s"/>
+        <circle cx="250" cy="170" r="0.7" fill="#FFF3C4" class="twinkle" style="--dur:4.1s;--delay:0.6s"/>
+        <circle cx="340" cy="190" r="0.6" fill="#FFF3C4" class="twinkle" style="--dur:5.5s;--delay:1.8s"/>
+        <circle cx="60" cy="250" r="0.5" fill="#FFF3C4" class="twinkle" style="--dur:3.9s;--delay:0.4s"/>
+        <circle cx="150" cy="270" r="0.7" fill="#FFF3C4" class="twinkle" style="--dur:4.4s;--delay:2.8s"/>
+        <circle cx="300" cy="250" r="0.6" fill="#FFF3C4" class="twinkle" style="--dur:3.3s;--delay:1.1s"/>
+        <circle cx="370" cy="280" r="0.8" fill="#FFF3C4" class="twinkle" style="--dur:4.7s;--delay:0.9s"/>
+        <circle cx="30" cy="320" r="0.6" fill="#FFF3C4" class="twinkle" style="--dur:5.1s;--delay:2.4s"/>
+        <circle cx="230" cy="310" r="0.5" fill="#FFF3C4" class="twinkle" style="--dur:3.7s;--delay:0.2s"/>
+        <circle cx="180" cy="340" r="0.7" fill="#FFF3C4" class="twinkle" style="--dur:4.3s;--delay:1.6s"/>
+        <circle cx="320" cy="340" r="0.6" fill="#FFF3C4" class="twinkle" style="--dur:4.9s;--delay:3s"/>
+        <circle cx="80" cy="360" r="0.5" fill="#FFF3C4" class="twinkle" style="--dur:3.1s;--delay:0.7s"/>
+
+        <!-- THE bright star -->
+        <circle cx="200" cy="160" r="40" fill="url(#bright-star)"/>
+        <circle cx="200" cy="160" r="3" fill="#FFF3C4" filter="url(#star-blur)"/>
+        <circle cx="200" cy="160" r="1.5" fill="white"/>
+
+        <!-- cross flare on bright star -->
+        <line x1="200" y1="148" x2="200" y2="172" stroke="#FFF3C4" stroke-width="0.5" opacity="0.6"/>
+        <line x1="188" y1="160" x2="212" y2="160" stroke="#FFF3C4" stroke-width="0.5" opacity="0.6"/>
+        <line x1="192" y1="152" x2="208" y2="168" stroke="#FFF3C4" stroke-width="0.3" opacity="0.3"/>
+        <line x1="208" y1="152" x2="192" y2="168" stroke="#FFF3C4" stroke-width="0.3" opacity="0.3"/>
+
+        <!-- desert landscape at bottom -->
+        <path d="M0 370 Q100 355 200 365 Q300 375 400 360 L400 400 L0 400 Z" fill="#D4B896" opacity="0.08"/>
+      </svg>
+    </div>
+
+    <p class="text">
+      Já faz seis anos. Nunca contei essa história antes. Os colegas que me viram
+      voltar ficaram contentes de me ver vivo. Eu tava triste mas disse:
+      é o cansaço.
+    </p>
+
+    <p class="text">
+      Agora já me consolei um pouco. Quer dizer... não inteiramente.
+      Mas sei que ele voltou pro planeta dele, porque de manhãzinha
+      o corpo não tava mais lá. E de noite eu gosto de escutar as estrelas.
+      São como quinhentos milhões de guizinhos.
+    </p>
+
+    <p class="text">
+      Mas acontece uma coisa: esqueci de botar a correia de couro
+      no focinho do carneiro desenhado. E fico pensando:
+      será que o carneiro comeu a rosa?
+    </p>
+
+    <p class="text">
+      Às vezes penso: claro que não. O príncipe cobre a rosa toda noite
+      com a redoma e vigia o carneiro. E aí fico feliz. E todas as estrelas
+      riem baixinho.
+    </p>
+
+    <p class="text">
+      Às vezes penso: a gente se distrai uma vez ou outra, e basta.
+      Uma noite ele esqueceu a redoma, ou o carneiro saiu de fininho...
+      E aí os guizinhos todos viram lágrimas.
+    </p>
+
+    <div class="star-divider" style="margin: 60px 0;">
+      <span style="color: var(--star);">✦</span>
+    </div>
+
+    <p class="dialogue" style="font-size: 1.3rem; color: var(--star-glow); margin: 48px 0;">
+      Olha pro céu. Pergunta: o carneiro comeu ou não comeu a flor?<br>
+      E tu vai ver como tudo muda.
+    </p>
+
+    <p class="text" style="margin-top: 48px;">
+      E nenhum coroa vai entender que isso é importante.
+    </p>
+
+    <div style="margin-top: 80px;">
+      <div class="illustration illustration-small">
+        <svg viewBox="0 0 200 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <!-- simple desert landscape with one star -->
+          <path d="M0 90 Q50 80 100 88 Q150 96 200 85 L200 120 L0 120 Z" fill="#D4B896" opacity="0.15"/>
+          <line x1="0" y1="90" x2="200" y2="85" stroke="#D4B896" stroke-width="0.5" opacity="0.2"/>
+          <!-- single star above -->
+          <circle cx="100" cy="30" r="1.5" fill="#FFF3C4" class="twinkle" style="--dur:4s"/>
+          <circle cx="100" cy="30" r="6" fill="#F2C94C" opacity="0.08"/>
+        </svg>
+      </div>
+
+      <p class="text text-center" style="font-size: 0.9rem; opacity: 0.5; margin-top: 24px;">
+        Essa aqui é, pra mim, a paisagem mais bonita e mais triste do mundo.
+        É o lugar onde o pequeno príncipe apareceu na Terra
+        e onde depois sumiu.
+      </p>
+
+      <p class="text text-center" style="font-size: 0.9rem; opacity: 0.5;">
+        Se um dia tu viajar pela África e passar por esse lugar,
+        não vai embora com pressa. Espera um pouco, bem debaixo da estrela.
+        Se então aparecer um moleque de cabelo dourado que ri
+        e não responde quando perguntam, tu já sabe quem é.
+      </p>
+
+      <p class="text text-center" style="font-size: 0.9rem; opacity: 0.5;">
+        Aí faz um favor: me manda notícia. Me diz que ele voltou.
+      </p>
+    </div>
+
+    <span class="ornament" style="color: var(--star); margin-top: 60px;">✦</span>
+  </div>
+</section>
+
+<!-- ╔══════════════════════════════════════╗ -->
+<!-- ║            COLOFÃO                   ║ -->
+<!-- ╚══════════════════════════════════════╝ -->
+<footer class="colophon">
+  <p>
+    Livremente inspirado na obra de Antoine de Saint-Exupéry<br>
+    Ilustrações originais em SVG no espírito das aquarelas do autor<br><br>
+    <span style="font-style: italic;">
+      «O essencial é invisível pros olhos.»
+    </span>
+  </p>
+</footer>
+
+<script>
+// Intersection Observer for scroll reveal
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+    }
+  });
+}, {
+  threshold: 0.15,
+  rootMargin: '0px 0px -50px 0px'
+});
+
+document.querySelectorAll('.chapter').forEach(chapter => {
+  observer.observe(chapter);
+});
+
+// Cover is always visible
+document.querySelector('.cover')?.classList.add('visible');
+</script>
+
+</body>
+</html>
